@@ -147,9 +147,7 @@ function MedicationPage() {
 
 
   return (
-    <div className="grid md:grid-cols-2 gap-8 items-start">
-      <MedicationSchedule />
-      <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 items-start">
         <Card className="w-full max-w-sm">
           <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -181,7 +179,7 @@ function MedicationPage() {
             )}
           </CardContent>
         </Card>
-      </div>
+      <MedicationSchedule />
     </div>
   );
 }
