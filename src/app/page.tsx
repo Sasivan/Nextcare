@@ -8,7 +8,7 @@ import { Header } from '@/components/header';
 import { RealTimeVitals } from '@/components/real-time-vitals';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Siren, Pill, ShieldAlert, AlertTriangle, Send, Trash2 } from 'lucide-react';
+import { Siren, Pill, ShieldAlert, AlertTriangle, Send, Trash2, List, ShieldCheck } from 'lucide-react';
 import { useMqttContext } from '@/context/mqtt-context';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
@@ -25,8 +25,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
+import { ScrollArea } from '@/components/ui/scroll-area';
 
-function SOSAlertPage() {
+function SOSAlertPage({ userType }: { userType: 'elder' | 'family' }) {
+  if (userType === 'family') {
+    return <FamilySOSLog />;
+  }
+  
   return (
     <div className="flex items-center justify-center h-full">
       <Card className="w-full max-w-md">
@@ -47,6 +52,51 @@ function SOSAlertPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+function FamilySOSLog() {
+  const [alerts, setAlerts] = useState([
+    { id: 1, time: new Date().toLocaleString(), details: 'SOS button pressed. Location: Home.' },
+  ]);
+  const hasAlerts = alerts.length > 0;
+
+  return (
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <List className="h-6 w-6" />
+          SOS Alert Log
+        </CardTitle>
+        <CardDescription>
+          A log of all SOS alerts received from the elder's device.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        {hasAlerts ? (
+          <ScrollArea className="h-[300px] border rounded-md p-4">
+            <div className="space-y-4">
+              {alerts.map((alert) => (
+                <div key={alert.id} className="flex items-start gap-4 p-3 bg-destructive/10 rounded-lg">
+                  <Siren className="h-6 w-6 text-destructive flex-shrink-0 mt-1" />
+                  <div>
+                    <p className="font-semibold text-destructive-foreground">SOS Alert Received</p>
+                    <p className="text-sm text-muted-foreground">{alert.time}</p>
+                    <p className="text-sm">{alert.details}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </ScrollArea>
+        ) : (
+          <div className="flex flex-col items-center justify-center h-48 border-2 border-dashed rounded-lg">
+             <ShieldCheck className="h-12 w-12 text-green-500" />
+            <p className="mt-4 text-lg font-semibold text-green-500">No Alerts</p>
+            <p className="text-muted-foreground">The system is clear. No SOS alerts have been triggered.</p>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }
 
@@ -235,7 +285,7 @@ function FallDetectionPage() {
   );
 }
 
-function AppView() {
+function AppView({ userType }: { userType: 'elder' | 'family' }) {
   const [activePage, setActivePage] = useState<NavItem>('Real-time Vitals');
 
   const renderContent = () => {
@@ -243,7 +293,7 @@ function AppView() {
       case 'Real-time Vitals':
         return <RealTimeVitals />;
       case 'SOS Alert':
-        return <SOSAlertPage />;
+        return <SOSAlertPage userType={userType} />;
       case 'Medication':
         return <MedicationPage />;
       case 'Emergency Fall Detection':
@@ -277,10 +327,10 @@ export default function Home() {
             </TabsList>
           </div>
           <TabsContent value="elder">
-            <AppView />
+            <AppView userType="elder" />
           </TabsContent>
           <TabsContent value="family">
-            <AppView />
+            <AppView userType="family" />
           </TabsContent>
         </Tabs>
       </div>
