@@ -9,7 +9,7 @@ import { Header } from '@/components/header';
 import { RealTimeVitals } from '@/components/real-time-vitals';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Siren, Pill, ShieldAlert, AlertTriangle, Send, List, ShieldCheck, Bell, MessageSquareQuote } from 'lucide-react';
+import { Siren, Pill, ShieldAlert, AlertTriangle, Send, List, ShieldCheck, Bell, MessageSquareQuote, HomeIcon } from 'lucide-react';
 import { useMqttContext } from '@/context/mqtt-context';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
@@ -380,29 +380,33 @@ function HomePage() {
             </p>
           </div>
           <div className="flex justify-center">
-          <svg
-              data-ai-hint="elderly woman phone"
+           <svg
+              data-ai-hint="elderly care symbol"
               xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 256 256"
+              width="250"
+              height="250"
+              viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="8"
+              strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="w-[300px] h-[300px] text-foreground"
+              className="text-primary"
             >
-              <path d="M124.2,60.2c-4.2-12.7-19.3-19.2-31.9-15c-12.7,4.2-19.2,19.3-15,31.9c0.8,2.3,1.9,4.5,3.4,6.4" />
-              <path d="M117.8,40.1c-0.6-1.6-1.3-3.2-2.1-4.7c-4.2-7.8-13.6-10.8-21.4-6.6s-10.8,13.6-6.6,21.4c2.5,4.7,6.8,8.2,11.9,9.8" />
-              <path d="M102,68c-4.5-0.1-8.7,2-11.4,5.8c-3.1,4.2-3.8,9.6-1.7,14.3c3,6.5,9.7,10.2,16.6,9.1c7.2-1.1,12.5-7.2,12.5-14.4c-0.1-4.2-1.9-8.1-4.9-10.9" />
-              <path d="M104.9,24.1c4.2,1.3,7.9,3.8,10.6,7.3" />
-              <path d="M84.2,33.5c-8.9-1.3-17.5,3.6-21.3,11.5" />
-              <path d="M140.2,143.2l-30-4.5c-8.7-1.3-16.7,3.5-19.9,11.3l-15,30c-3.2,6.4,0.1,14.1,6.5,17.3l45,22.5c6.4,3.2,14.1,0.1,17.3-6.5l24-48c3.2-6.4-0.1-14.1-6.5-17.3l-15-7.5" />
-              <path d="M75.2,180.2v45h-15v-45" />
-              <path d="M60.2,225.2h120v-15H60.2Z" />
-              <path d="M180.2,225.2V105.2c0-8.3-6.7-15-15-15h-30" />
-              <rect x="160.2" y="55.2" width="60" height="90" rx="15" />
-              <path d="M135.2,90.2h15" />
-              <path d="M105.2,150.2c-5.5,8.3-4,19.2,3.5,25.7" />
+              <path d="M12 2a5 5 0 0 0-5 5c0 1.66.84 3.15 2.13 4.09" />
+              <path d="M17 7a5 5 0 0 0-5-5" />
+              <path d="M12 22v-6" />
+              <path d="M9 16h6" />
+              <path d="M12 7a5 5 0 0 0 5 5c0 1.66-.84 3.15-2.13 4.09" />
+              <path d="m12 16-2-4" />
+              <path d="m12 16 2-4" />
+              <path d="M19.13 11.09c1.29-.94 2.13-2.43 2.13-4.09a5 5 0 0 0-5-5" />
+              <path d="M17.5 17.5c-2.5-2.5-6.5-2.5-9 0" />
+              <path d="M22 17h-2" />
+              <path d="M19 17v-2" />
+              <path d="M5 17H3" />
+              <path d="M5 15v2" />
+              <path d="M12 16.5a4.5 4.5 0 0 0-4.5 4.5h9a4.5 4.5 0 0 0-4.5-4.5z" />
             </svg>
           </div>
         </div>
@@ -432,6 +436,8 @@ function AppView({
 
   const renderContent = () => {
     switch (activePage) {
+      case 'Home':
+        return <HomePage />;
       case 'Real-time Vitals':
         return <RealTimeVitals />;
       case 'SOS Alert':
