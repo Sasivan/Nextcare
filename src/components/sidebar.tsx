@@ -2,14 +2,14 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { LayoutDashboard, Siren, Pill } from 'lucide-react';
+import { HeartPulse, Siren, Pill } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
-export type NavItem = 'Dashboard' | 'SOS Alert' | 'Medication';
+export type NavItem = 'Real-time Vitals' | 'SOS Alert' | 'Medication';
 
 const navItems: { name: NavItem; icon: React.ElementType }[] = [
-  { name: 'Dashboard', icon: LayoutDashboard },
+  { name: 'Real-time Vitals', icon: HeartPulse },
   { name: 'SOS Alert', icon: Siren },
   { name: 'Medication', icon: Pill },
 ];

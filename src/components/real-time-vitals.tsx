@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useMqttContext } from '@/context/mqtt-context';
@@ -8,13 +9,10 @@ import {
   Thermometer,
   Droplets,
   Wind,
-  Pill,
   ThermometerSun,
   Move,
   Orbit,
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Skeleton } from './ui/skeleton';
 
 const vitalSignsConfig = [
   {
@@ -75,7 +73,7 @@ const vitalSignsConfig = [
   },
 ];
 
-export function Dashboard() {
+export function RealTimeVitals() {
   const { payload } = useMqttContext();
   const lastUpdated = Date.now();
 
@@ -107,24 +105,6 @@ export function Dashboard() {
           lastUpdated={typedPayload ? lastUpdated : 0}
         />
       ))}
-      <Card>
-        <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium text-muted-foreground">
-            Medication Adherence
-          </CardTitle>
-          <Pill className="h-5 w-5 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-        {typedPayload ? (
-          <div className={`text-3xl font-bold ${typedPayload.swallow_pill_today ? 'text-green-500' : 'text-destructive'}`}>
-            {typedPayload.swallow_pill_today ? 'YES' : 'NO'}
-          </div>
-        ) : (
-          <Skeleton className="h-8 w-20" />
-        )}
-          <p className="text-xs text-muted-foreground mt-2">Pill swallowed today</p>
-        </CardContent>
-      </Card>
       <AnomalyLog anomalies={typedPayload?.abnormal_sign ?? []} />
     </div>
   );
