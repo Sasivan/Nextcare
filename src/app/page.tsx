@@ -260,7 +260,7 @@ function MedicationPage({
 
   return (
     <div className="flex flex-col gap-8 items-start">
-        <Card className="w-full max-w-sm">
+        <Card className="w-full">
           <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Medication Adherence
@@ -363,41 +363,21 @@ const initialMedications: Medication[] = [
   { id: 5, title: 'Omega-3', time: '12:00 PM', dose: '1000mg', taken: false },
 ];
 
-function AppView({ userType }: { userType: 'elder' | 'family' }) {
+function AppView({
+  userType,
+  medications,
+  medicationReminders,
+  handleMedicationToggle,
+  handleSendReminder,
+}: {
+  userType: 'elder' | 'family';
+  medications: Medication[];
+  medicationReminders: MedicationReminder[];
+  handleMedicationToggle: (id: number) => void;
+  handleSendReminder: (med: Medication) => void;
+}) {
   const [activePage, setActivePage] = useState<NavItem>('Real-time Vitals');
-  
-  // State lifted up for communication between family and elder views
-  const [medications, setMedications] = useState<Medication[]>(initialMedications);
-  const [medicationReminders, setMedicationReminders] = useState<MedicationReminder[]>([]);
-  const { toast } = useToast();
 
-  const handleMedicationToggle = (id: number) => {
-    setMedications((prevMeds) =>
-      prevMeds.map((med) =>
-        med.id === id ? { ...med, taken: !med.taken } : med
-      )
-    );
-     // If a medication is marked as taken, remove it from reminders
-    setMedicationReminders((prevReminders) => prevReminders.filter(r => r.id !== id));
-  };
-
-  const handleSendReminder = (med: Medication) => {
-    // Prevent sending duplicate reminders
-    if (!medicationReminders.some(r => r.id === med.id)) {
-      setMedicationReminders(prev => [...prev, { id: med.id, title: med.title, time: med.time, dose: med.dose }]);
-      toast({
-        title: "Reminder Sent",
-        description: `A reminder for ${med.title} was sent.`,
-      });
-    } else {
-       toast({
-        title: "Reminder Already Sent",
-        description: `A reminder for ${med.title} is already pending.`,
-        variant: "destructive",
-      });
-    }
-  };
-  
   const renderContent = () => {
     switch (activePage) {
       case 'Real-time Vitals':
@@ -431,8 +411,38 @@ function AppView({ userType }: { userType: 'elder' | 'family' }) {
   );
 }
 
-
 export default function Home() {
+  const [medications, setMedications] = useState<Medication[]>(initialMedications);
+  const [medicationReminders, setMedicationReminders] = useState<MedicationReminder[]>([]);
+  const { toast } = useToast();
+
+  const handleMedicationToggle = (id: number) => {
+    setMedications((prevMeds) =>
+      prevMeds.map((med) =>
+        med.id === id ? { ...med, taken: !med.taken } : med
+      )
+    );
+    // If a medication is marked as taken, remove it from reminders
+    setMedicationReminders((prevReminders) => prevReminders.filter(r => r.id !== id));
+  };
+
+  const handleSendReminder = (med: Medication) => {
+    // Prevent sending duplicate reminders
+    if (!medicationReminders.some(r => r.id === med.id)) {
+      setMedicationReminders(prev => [...prev, { id: med.id, title: med.title, time: med.time, dose: med.dose }]);
+      toast({
+        title: "Reminder Sent",
+        description: `A reminder for ${med.title} was sent.`,
+      });
+    } else {
+       toast({
+        variant: "destructive",
+        title: "Reminder Already Sent",
+        description: `A reminder for ${med.title} is already pending.`,
+      });
+    }
+  };
+
   return (
     <MqttProvider>
       <div className="min-h-screen w-full bg-background font-body">
@@ -445,10 +455,22 @@ export default function Home() {
             </TabsList>
           </div>
           <TabsContent value="elder">
-            <AppView userType="elder" />
+            <AppView
+              userType="elder"
+              medications={medications}
+              medicationReminders={medicationReminders}
+              handleMedicationToggle={handleMedicationToggle}
+              handleSendReminder={handleSendReminder}
+            />
           </TabsContent>
           <TabsContent value="family">
-            <AppView userType="family" />
+            <AppView
+              userType="family"
+              medications={medications}
+              medicationReminders={medicationReminders}
+              handleMedicationToggle={handleMedicationToggle}
+              handleSendReminder={handleSendReminder}
+            />
           </TabsContent>
         </Tabs>
       </div>
