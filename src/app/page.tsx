@@ -384,10 +384,12 @@ function AppView({
   sosAlerts: SosAlert[];
   handleSendSosAlert: () => void;
 }) {
-  const [activePage, setActivePage] = useState<NavItem>('Real-time Vitals');
+  const [activePage, setActivePage] = useState<NavItem>('Home');
 
   const renderContent = () => {
     switch (activePage) {
+      case 'Home':
+        return <div></div>;
       case 'Real-time Vitals':
         return <RealTimeVitals />;
       case 'SOS Alert':
