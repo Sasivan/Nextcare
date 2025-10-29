@@ -37,7 +37,7 @@ const prompt = ai.definePrompt({
 
   Vital Signs Data:
   \`\`\`json
-  {{{json aniescape="true" vitalSigns}}}
+  {{{json vitalSigns}}}
   \`\`\`
 
   Summary:`,
