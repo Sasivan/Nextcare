@@ -177,14 +177,14 @@ function FamilyMedicationSchedule({
   );
 }
 
-function ElderMedicationLog({ reminders }: { reminders: MedicationReminder[] }) {
+function ElderMedicationLog({ reminders, onMedicationToggle }: { reminders: MedicationReminder[], onMedicationToggle: (id: number) => void }) {
   const hasReminders = reminders.length > 0;
   return (
     <Card className="w-full">
       <CardHeader>
         <CardTitle>Medication Reminders</CardTitle>
         <CardDescription>
-          Reminders sent by your family.
+          Reminders sent by your family. Check the box once you've taken the medication.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -193,11 +193,13 @@ function ElderMedicationLog({ reminders }: { reminders: MedicationReminder[] }) 
              <div className="space-y-4">
                {reminders.map((reminder) => (
                  <div key={reminder.id} className="flex items-start gap-4 p-3 bg-blue-900/20 rounded-lg">
-                   <Bell className="h-5 w-5 text-primary flex-shrink-0 mt-1" />
-                   <div>
+                   <div className="flex items-center h-full mt-1">
+                     <Checkbox id={`reminder-${reminder.id}`} onCheckedChange={() => onMedicationToggle(reminder.id)} className="h-5 w-5"/>
+                   </div>
+                   <label htmlFor={`reminder-${reminder.id}`} className="flex-1 cursor-pointer">
                      <p className="font-semibold">Please take: {reminder.title}</p>
                      <p className="text-sm text-muted-foreground">Time: {reminder.time} | Dose: {reminder.dose}</p>
-                   </div>
+                   </label>
                  </div>
                ))}
              </div>
@@ -230,7 +232,6 @@ function MedicationPage({
   const { toast } = useToast();
   const typedPayload = payload as any;
   
-  // Adherence is false if pill not swallowed OR if there are pending reminders
   const medicationTakenFromIoT = typedPayload?.swallow_pill_today === true;
   const hasPendingReminders = medicationReminders.length > 0;
   const isAdherent = medicationTakenFromIoT && !hasPendingReminders;
@@ -246,8 +247,8 @@ function MedicationPage({
           action: <BellRing className="h-6 w-6 text-primary" />,
         });
       }
-      showToast(); // Show immediately
-      reminderInterval = setInterval(showToast, 2 * 60 * 1000); // Remind every 2 minutes
+      showToast(); 
+      reminderInterval = setInterval(showToast, 2 * 60 * 1000); 
     }
 
     return () => {
@@ -293,7 +294,7 @@ function MedicationPage({
         </Card>
         
         {userType === 'elder' ? (
-          <ElderMedicationLog reminders={medicationReminders} />
+          <ElderMedicationLog reminders={medicationReminders} onMedicationToggle={onMedicationToggle} />
         ) : (
           <FamilyMedicationSchedule
             medications={medications}
@@ -477,3 +478,5 @@ export default function Home() {
     </MqttProvider>
   );
 }
+
+    
