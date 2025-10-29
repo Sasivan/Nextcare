@@ -99,7 +99,6 @@ export function useMqtt(brokerUrl: string, topic: string) {
           }
         });
       } else {
-        console.error('MQTT client not connected. Cannot publish.');
         throw new Error('MQTT client not connected.');
       }
     },
