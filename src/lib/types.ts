@@ -1,3 +1,4 @@
+
 export interface VitalSigns {
   body_temperature: number;
   shirt_humidity: number;
@@ -8,4 +9,5 @@ export interface VitalSigns {
   abnormal_sign: string[];
   AcX: number;
   GyX: number;
+  fall_emergency?: boolean;
 }
