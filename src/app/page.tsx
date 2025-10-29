@@ -2,13 +2,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { MqttProvider } from '@/context/mqtt-context';
 import { Sidebar, type NavItem } from '@/components/sidebar';
 import { Header } from '@/components/header';
 import { RealTimeVitals } from '@/components/real-time-vitals';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Siren, Pill, ShieldAlert, AlertTriangle, Send, List, ShieldCheck, Bell, MessageSquareQuote, HomeIcon } from 'lucide-react';
+import { Siren, Pill, ShieldAlert, AlertTriangle, Send, List, ShieldCheck, Bell, MessageSquareQuote } from 'lucide-react';
 import { useMqttContext } from '@/context/mqtt-context';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
@@ -25,6 +26,7 @@ import {
 } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from '@/components/ui/scroll-area';
+import placeholderImage from '@/lib/placeholder-images.json';
 
 type Medication = {
   id: number;
@@ -369,19 +371,26 @@ const initialMedications: Medication[] = [
 function HomePage() {
   return (
     <main className="flex-1 p-4 sm:p-6 lg:p-8">
-      <div className="flex items-center justify-center h-full">
-        <Card className="w-full max-w-lg text-center">
-            <CardHeader>
-              <CardTitle className="flex items-center justify-center gap-2 text-2xl">
-                <HomeIcon className="h-8 w-8 text-primary" />
-                Welcome to VitalView
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">Select 'Elder View' or 'Family View' from the tabs above to get started.</p>
-            </CardContent>
-          </Card>
+      <div className="container mx-auto h-full flex items-center">
+        <div className="grid md:grid-cols-2 gap-8 items-center">
+          <div className="space-y-4">
+            <h1 className="text-6xl font-bold tracking-tighter">NextCare+</h1>
+            <p className="text-lg text-muted-foreground italic">
+              Your comprehensive remote health monitoring solution.
+            </p>
+          </div>
+          <div className="flex justify-center">
+             <Image
+                data-ai-hint="elderly person drawing"
+                src={placeholderImage.hero.src}
+                alt={placeholderImage.hero.alt}
+                width={400}
+                height={400}
+                className="rounded-lg"
+              />
+          </div>
         </div>
+      </div>
     </main>
   );
 }

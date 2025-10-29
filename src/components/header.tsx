@@ -20,7 +20,7 @@ export function Header({ activeView, setActiveView }: HeaderProps) {
         <div className="flex items-center gap-3">
           <Waves className="h-6 w-6 text-primary" />
           <h1 className="text-2xl font-bold tracking-tight text-foreground">
-            VitalView
+            NextCare+
           </h1>
         </div>
         <Tabs value={activeView} onValueChange={(value) => setActiveView(value as 'home' |'elder' | 'family')}>
@@ -35,5 +35,3 @@ export function Header({ activeView, setActiveView }: HeaderProps) {
     </header>
   );
 }
-
-    
