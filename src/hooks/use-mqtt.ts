@@ -1,7 +1,8 @@
+
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
-import mqtt, { MqttClient } from 'mqtt';
+import { useEffect, useState, useRef, useCallback } from 'react';
+import mqtt, { MqttClient, IClientPublishOptions } from 'mqtt';
 import type { VitalSigns } from '@/lib/types';
 import { useToast } from './use-toast';
 
@@ -79,5 +80,22 @@ export function useMqtt(brokerUrl: string, topic: string) {
     };
   }, [brokerUrl, topic, toast]);
 
-  return { status, payload };
+  const publish = useCallback(
+    (publishTopic: string, message: string, qos: 0 | 1 | 2) => {
+      if (clientRef.current && clientRef.current.connected) {
+        const options: IClientPublishOptions = { qos };
+        clientRef.current.publish(publishTopic, message, options, (error) => {
+          if (error) {
+            console.error('Publish error: ', error);
+          }
+        });
+      } else {
+        console.error('MQTT client not connected. Cannot publish.');
+        throw new Error('MQTT client not connected.');
+      }
+    },
+    []
+  );
+
+  return { status, payload, publish };
 }

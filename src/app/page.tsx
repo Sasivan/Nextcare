@@ -8,12 +8,13 @@ import { Header } from '@/components/header';
 import { RealTimeVitals } from '@/components/real-time-vitals';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Siren, Pill, ShieldAlert, AlertTriangle } from 'lucide-react';
+import { Siren, Pill, ShieldAlert, AlertTriangle, Send } from 'lucide-react';
 import { useMqttContext } from '@/context/mqtt-context';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { BellRing } from 'lucide-react';
+import { PublishPage } from '@/components/publish-page';
 
 function SOSAlertPage() {
   return (
@@ -176,6 +177,8 @@ export default function Home() {
         return <MedicationPage />;
       case 'Emergency Fall Detection':
         return <FallDetectionPage />;
+      case 'Publish':
+        return <PublishPage />;
       default:
         return <RealTimeVitals />;
     }

@@ -2,17 +2,18 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { HeartPulse, Siren, Pill, ShieldAlert } from 'lucide-react';
+import { HeartPulse, Siren, Pill, ShieldAlert, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
-export type NavItem = 'Real-time Vitals' | 'SOS Alert' | 'Medication' | 'Emergency Fall Detection';
+export type NavItem = 'Real-time Vitals' | 'SOS Alert' | 'Medication' | 'Emergency Fall Detection' | 'Publish';
 
 const navItems: { name: NavItem; icon: React.ElementType }[] = [
   { name: 'Real-time Vitals', icon: HeartPulse },
   { name: 'SOS Alert', icon: Siren },
   { name: 'Medication', icon: Pill },
   { name: 'Emergency Fall Detection', icon: ShieldAlert },
+  { name: 'Publish', icon: Send },
 ];
 
 interface SidebarProps {
