@@ -42,10 +42,16 @@ type MedicationReminder = {
   dose: string;
 };
 
+type SosAlert = {
+  id: number;
+  time: string;
+  details: string;
+};
 
-function SOSAlertPage({ userType }: { userType: 'elder' | 'family' }) {
+
+function SOSAlertPage({ userType, alerts, onSendSosAlert }: { userType: 'elder' | 'family', alerts: SosAlert[], onSendSosAlert: () => void }) {
   if (userType === 'family') {
-    return <FamilySOSLog />;
+    return <FamilySOSLog alerts={alerts} />;
   }
   
   return (
@@ -62,7 +68,7 @@ function SOSAlertPage({ userType }: { userType: 'elder' | 'family' }) {
             Press the button below to send an immediate SOS alert to the system.
             This action should only be taken in a real emergency.
           </p>
-          <Button variant="destructive" size="lg" className="w-full">
+          <Button variant="destructive" size="lg" className="w-full" onClick={onSendSosAlert}>
             Send SOS Alert
           </Button>
         </CardContent>
@@ -71,10 +77,7 @@ function SOSAlertPage({ userType }: { userType: 'elder' | 'family' }) {
   );
 }
 
-function FamilySOSLog() {
-  const [alerts, setAlerts] = useState([
-    { id: 1, time: new Date().toLocaleString(), details: 'SOS button pressed. Location: Home.' },
-  ]);
+function FamilySOSLog({ alerts }: { alerts: SosAlert[] }) {
   const hasAlerts = alerts.length > 0;
 
   return (
@@ -370,12 +373,16 @@ function AppView({
   medicationReminders,
   handleMedicationToggle,
   handleSendReminder,
+  sosAlerts,
+  handleSendSosAlert,
 }: {
   userType: 'elder' | 'family';
   medications: Medication[];
   medicationReminders: MedicationReminder[];
   handleMedicationToggle: (id: number) => void;
   handleSendReminder: (med: Medication) => void;
+  sosAlerts: SosAlert[];
+  handleSendSosAlert: () => void;
 }) {
   const [activePage, setActivePage] = useState<NavItem>('Real-time Vitals');
 
@@ -384,7 +391,7 @@ function AppView({
       case 'Real-time Vitals':
         return <RealTimeVitals />;
       case 'SOS Alert':
-        return <SOSAlertPage userType={userType} />;
+        return <SOSAlertPage userType={userType} alerts={sosAlerts} onSendSosAlert={handleSendSosAlert} />;
       case 'Medication':
         return (
           <MedicationPage
@@ -415,15 +422,21 @@ function AppView({
 export default function Home() {
   const [medications, setMedications] = useState<Medication[]>(initialMedications);
   const [medicationReminders, setMedicationReminders] = useState<MedicationReminder[]>([]);
+  const [sosAlerts, setSosAlerts] = useState<SosAlert[]>([]);
   const { toast } = useToast();
 
   const handleMedicationToggle = (id: number) => {
-    setMedications((prevMeds) =>
-      prevMeds.map((med) =>
-        med.id === id ? { ...med, taken: !med.taken } : med
-      )
-    );
-    // If a medication is marked as taken, remove it from reminders
+    // If an elder marks a reminder as done, update the main medication list
+    const isReminder = medicationReminders.some(r => r.id === id);
+    if (isReminder) {
+      setMedications((prevMeds) =>
+        prevMeds.map((med) =>
+          med.id === id ? { ...med, taken: true } : med
+        )
+      );
+    }
+    
+    // Remove the reminder from the list for the elder
     setMedicationReminders((prevReminders) => prevReminders.filter(r => r.id !== id));
   };
 
@@ -444,6 +457,20 @@ export default function Home() {
     }
   };
 
+  const handleSendSosAlert = () => {
+    const newAlert: SosAlert = {
+      id: Date.now(),
+      time: new Date().toLocaleString(),
+      details: 'Manual SOS button pressed from the Elder\'s device.',
+    };
+    setSosAlerts(prevAlerts => [newAlert, ...prevAlerts]);
+    toast({
+      variant: 'destructive',
+      title: 'SOS Alert Sent',
+      description: 'The emergency alert has been broadcasted.',
+    });
+  };
+
   return (
     <MqttProvider>
       <div className="min-h-screen w-full bg-background font-body">
@@ -462,6 +489,8 @@ export default function Home() {
               medicationReminders={medicationReminders}
               handleMedicationToggle={handleMedicationToggle}
               handleSendReminder={handleSendReminder}
+              sosAlerts={sosAlerts}
+              handleSendSosAlert={handleSendSosAlert}
             />
           </TabsContent>
           <TabsContent value="family">
@@ -471,6 +500,8 @@ export default function Home() {
               medicationReminders={medicationReminders}
               handleMedicationToggle={handleMedicationToggle}
               handleSendReminder={handleSendReminder}
+              sosAlerts={sosAlerts}
+              handleSendSosAlert={handleSendSosAlert}
             />
           </TabsContent>
         </Tabs>
@@ -478,5 +509,3 @@ export default function Home() {
     </MqttProvider>
   );
 }
-
-    
