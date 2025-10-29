@@ -31,9 +31,7 @@ const prompt = ai.definePrompt({
   name: 'wellnessSummaryPrompt',
   input: { schema: WellnessSummaryInputSchema },
   output: { schema: WellnessSummaryOutputSchema },
-  prompt: `You are a medical assistant that provides a daily wellness summary for a patient based on their vital signs.
-
-  Analyze the following vital signs data and provide a brief, easy-to-understand summary of the patient's condition. Highlight any anomalies and suggest whether any action should be taken.
+  prompt: `You are a medical assistant. Analyze the vital signs and provide a very brief, one-sentence summary of the patient's condition.
 
   Vital Signs Data:
   \`\`\`json
