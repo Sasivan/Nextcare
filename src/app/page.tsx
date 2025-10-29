@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { BellRing } from 'lucide-react';
 import { PublishPage } from '@/components/publish-page';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Table,
   TableBody,
@@ -234,8 +235,7 @@ function FallDetectionPage() {
   );
 }
 
-
-export default function Home() {
+function AppView() {
   const [activePage, setActivePage] = useState<NavItem>('Real-time Vitals');
 
   const renderContent = () => {
@@ -256,16 +256,34 @@ export default function Home() {
   };
 
   return (
+    <div className="flex">
+      <Sidebar activeItem={activePage} setActiveItem={setActivePage} />
+      <main className="flex-1 p-4 sm:p-6 lg:p-8">{renderContent()}</main>
+    </div>
+  );
+}
+
+
+export default function Home() {
+  return (
     <MqttProvider>
       <div className="min-h-screen w-full bg-background font-body">
         <Header />
-        <div className="flex">
-          <Sidebar activeItem={activePage} setActiveItem={setActivePage} />
-          <main className="flex-1 p-4 sm:p-6 lg:p-8">{renderContent()}</main>
-        </div>
+        <Tabs defaultValue="elder" className="w-full">
+          <div className="flex justify-center border-b">
+            <TabsList className="grid w-full max-w-md grid-cols-2">
+              <TabsTrigger value="elder">Elder View</TabsTrigger>
+              <TabsTrigger value="family">Family View</TabsTrigger>
+            </TabsList>
+          </div>
+          <TabsContent value="elder">
+            <AppView />
+          </TabsContent>
+          <TabsContent value="family">
+            <AppView />
+          </TabsContent>
+        </Tabs>
       </div>
     </MqttProvider>
   );
 }
-
-    
