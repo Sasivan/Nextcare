@@ -24,6 +24,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
+import { WellnessSummary } from '@/components/wellness-summary';
 
 function SOSAlertPage() {
   return (
@@ -180,6 +181,7 @@ function MedicationPage() {
           </CardContent>
         </Card>
       <MedicationSchedule />
+      <WellnessSummary vitalSigns={typedPayload} />
     </div>
   );
 }
@@ -267,3 +269,5 @@ export default function Home() {
     </MqttProvider>
   );
 }
+
+    
