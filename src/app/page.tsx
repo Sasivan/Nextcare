@@ -15,7 +15,6 @@ import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { BellRing } from 'lucide-react';
 import { PublishPage } from '@/components/publish-page';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Table,
   TableBody,
@@ -384,12 +383,10 @@ function AppView({
   sosAlerts: SosAlert[];
   handleSendSosAlert: () => void;
 }) {
-  const [activePage, setActivePage] = useState<NavItem>('Home');
+  const [activePage, setActivePage] = useState<NavItem>('Real-time Vitals');
 
   const renderContent = () => {
     switch (activePage) {
-      case 'Home':
-        return <div></div>;
       case 'Real-time Vitals':
         return <RealTimeVitals />;
       case 'SOS Alert':
@@ -426,6 +423,7 @@ export default function Home() {
   const [medicationReminders, setMedicationReminders] = useState<MedicationReminder[]>([]);
   const [sosAlerts, setSosAlerts] = useState<SosAlert[]>([]);
   const { toast } = useToast();
+  const [activeView, setActiveView] = useState<'elder' | 'family'>('elder');
 
   const handleMedicationToggle = (id: number) => {
     // If an elder marks a reminder as done, update the main medication list
@@ -476,38 +474,19 @@ export default function Home() {
   return (
     <MqttProvider>
       <div className="min-h-screen w-full bg-background font-body">
-        <Header />
-        <Tabs defaultValue="elder" className="w-full">
-          <div className="flex justify-center border-b">
-            <TabsList className="grid w-full max-w-md grid-cols-2">
-              <TabsTrigger value="elder">Elder View</TabsTrigger>
-              <TabsTrigger value="family">Family View</TabsTrigger>
-            </TabsList>
-          </div>
-          <TabsContent value="elder">
-            <AppView
-              userType="elder"
-              medications={medications}
-              medicationReminders={medicationReminders}
-              handleMedicationToggle={handleMedicationToggle}
-              handleSendReminder={handleSendReminder}
-              sosAlerts={sosAlerts}
-              handleSendSosAlert={handleSendSosAlert}
-            />
-          </TabsContent>
-          <TabsContent value="family">
-            <AppView
-              userType="family"
-              medications={medications}
-              medicationReminders={medicationReminders}
-              handleMedicationToggle={handleMedicationToggle}
-              handleSendReminder={handleSendReminder}
-              sosAlerts={sosAlerts}
-              handleSendSosAlert={handleSendSosAlert}
-            />
-          </TabsContent>
-        </Tabs>
+        <Header activeView={activeView} setActiveView={setActiveView} />
+          <AppView
+            userType={activeView}
+            medications={medications}
+            medicationReminders={medicationReminders}
+            handleMedicationToggle={handleMedicationToggle}
+            handleSendReminder={handleSendReminder}
+            sosAlerts={sosAlerts}
+            handleSendSosAlert={handleSendSosAlert}
+          />
       </div>
     </MqttProvider>
   );
 }
+
+    
