@@ -51,7 +51,7 @@ export function PublishPage() {
     resolver: zodResolver(publishSchema),
     defaultValues: {
       topic: 'vital-signs',
-      message: '',
+      message: '{"heart_rate": 72, "body_temperature": 36.5, "breath_rate": 16, "shirt_humidity": 60, "env_temperature": 22, "swallow_pill_today": false, "abnormal_sign": [], "AcX": 0, "GyX": 0, "fall_emergency": false}',
       qos: '1',
     },
   });
@@ -64,7 +64,7 @@ export function PublishPage() {
         description: `Successfully sent to topic: ${data.topic}`,
         action: <Send className="h-5 w-5 text-green-500" />
       });
-      form.resetField('message');
+      // Don't reset message so user can send variations
     } catch (error) {
        console.error("Failed to publish message:", error);
        toast({
@@ -75,6 +75,15 @@ export function PublishPage() {
        });
     }
   };
+
+  const getDisplayPayload = () => {
+    if (!payload) return 'Waiting for messages...';
+    // Handle our special case for raw messages
+    if ((payload as any).raw) {
+      return (payload as any).raw;
+    }
+    return JSON.stringify(payload, null, 2);
+  }
 
   return (
     <div className="grid md:grid-cols-2 gap-8 h-full">
@@ -111,7 +120,7 @@ export function PublishPage() {
                     <FormControl>
                       <Textarea
                         placeholder="Enter your message here. Can be plain text or JSON."
-                        className="min-h-[150px]"
+                        className="min-h-[150px] font-mono text-xs"
                         {...field}
                       />
                     </FormControl>
@@ -159,13 +168,13 @@ export function PublishPage() {
         <CardHeader>
           <CardTitle>Incoming Messages</CardTitle>
           <CardDescription>
-            Raw JSON data received from the 'vital-signs' topic.
+            Raw data received from subscribed topics.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <ScrollArea className="h-[400px] w-full rounded-md border p-4 bg-muted/20">
             <pre className="text-sm whitespace-pre-wrap">
-              {payload ? JSON.stringify(payload, null, 2) : 'Waiting for messages...'}
+              {getDisplayPayload()}
             </pre>
           </ScrollArea>
         </CardContent>
