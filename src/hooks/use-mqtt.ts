@@ -40,29 +40,25 @@ export function useMqtt(brokerUrl: string, topic: string) {
       });
 
       client.on('message', (_topic, message) => {
-        try {
-          // Only parse messages from the main vital-signs topic
-          if (_topic === topic) {
-            const parsedMessage = JSON.parse(message.toString());
+        const messageString = message.toString();
+        // Only process messages from the main vital-signs topic for the dashboard
+        if (_topic === topic) {
+          try {
+            const parsedMessage = JSON.parse(messageString);
             setPayload(parsedMessage);
-          } else {
-            // For other topics, we can just update with raw data if needed,
-            // or create a separate state. For now, we'll just update the main payload
-            // to show it on the publish screen.
-             const rawMessage = message.toString();
-             // A bit of a hack to display raw messages on the publish screen
-             setPayload({ raw: rawMessage } as any);
-          }
-        } catch (e) {
-          console.error('Failed to parse MQTT message:', e);
-          // Only show toast if it's the main topic failing
-          if (_topic === topic) {
+          } catch (e) {
+            console.warn('Failed to parse MQTT message on main topic, treating as raw.', e);
+            // Treat as raw if parsing fails
+            setPayload({ raw: messageString } as any);
             toast({
-              title: "Data Error",
-              description: "Received a malformed data packet.",
-              variant: "destructive",
+              title: "Informational",
+              description: "Received a non-JSON message on the main data topic.",
             });
           }
+        } else {
+          // For other topics, we can just update with raw data if needed,
+          // for display on the publish screen.
+           setPayload({ raw: messageString } as any);
         }
       });
 
