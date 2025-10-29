@@ -380,14 +380,50 @@ function HomePage() {
             </p>
           </div>
           <div className="flex justify-center">
-             <Image
-                data-ai-hint="elderly person drawing"
-                src={placeholderImage.hero.src}
-                alt={placeholderImage.hero.alt}
-                width={400}
-                height={400}
-                className="rounded-lg"
-              />
+            <svg
+              data-ai-hint="elderly person drawing"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="w-[300px] h-[300px] text-foreground"
+            >
+              <path d="M12.5 8.5C12.5 7.67 13.17 7 14 7C14.83 7 15.5 7.67 15.5 8.5" />
+              <path d="M11 6L10.5 5.5" />
+              <path d="M13 5.5L12.5 6" />
+              <path d="M10.5 8C10.5 7.17 11.17 6.5 12 6.5C12.83 6.5 13.5 7.17 13.5 8" />
+              <path d="M12.5 8.5C12.5 7.67 13.17 7 14 7C14.83 7 15.5 7.67 15.5 8.5" />
+              <path d="M10.5 8C10.5 7.17 11.17 6.5 12 6.5C12.83 6.5 13.5 7.17 13.5 8" />
+              <path d="M9.5 9.5C9.5 8.67 10.17 8 11 8C11.83 8 12.5 8.67 12.5 9.5" />
+              <path d="M14.5 9.5C14.5 8.67 15.17 8 16 8C16.83 8 17.5 8.67 17.5 9.5" />
+              <path d="M11.5 10C11.5 9.17 12.17 8.5 13 8.5C13.83 8.5 14.5 9.17 14.5 10" />
+              <path d="M12 4.5C10.07 4.5 8.5 6.07 8.5 8C8.5 9.93 10.07 11.5 12 11.5" />
+              <path d="M15.5 4.5C13.57 4.5 12 6.07 12 8C12 9.93 13.57 11.5 15.5 11.5" />
+              <path d="M9 12V10.5C9 9.67 9.67 9 10.5 9H16.5C17.33 9 18 9.67 18 10.5V12" />
+              <path d="M10 12.5C8.9 12.5 8 13.4 8 14.5V19.5C8 20.6 8.9 21.5 10 21.5H11.5" />
+              <path d="M11 12.5L10.5 13" />
+              <path d="M9 13H10" />
+              <path d="M9 15L9.5 15.5" />
+              <path d="M9 17L9.5 17.5" />
+              <path d="M9 19L9.5 19.5" />
+              <path d="M11 12.5H16" />
+              <path d="M16 12.5C17.1 12.5 18 13.4 18 14.5V19.5C18 20.6 17.1 21.5 16 21.5H14.5" />
+              <path d="M16 12.5L16.5 13" />
+              <path d="M18 13H17" />
+              <path d="M18 15L17.5 15.5" />
+              <path d="M18 17L17.5 17.5" />
+              <path d="M18 19L17.5 19.5" />
+              <path d="M12 14.5L12 21.5" />
+              <path d="M17.5 15V21.5" />
+              <path d="M17.5 15H19.5V14H17.5" />
+              <path d="M18.5 15L18.5 21.5" />
+              <path d="M20.5 15L20.5 21.5" />
+              <path d="M17.5 21.5H21.5" />
+              <path d="M19.5 21.5V22.5" />
+            </svg>
           </div>
         </div>
       </div>
