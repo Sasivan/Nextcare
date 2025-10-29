@@ -371,43 +371,35 @@ const initialMedications: Medication[] = [
 function HomePage() {
   return (
     <main className="flex-1 p-4 sm:p-6 lg:p-8">
-      <div className="container mx-auto h-full flex items-center">
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-          <div className="space-y-4">
-            <h1 className="text-6xl font-bold tracking-tighter">NextCare+</h1>
-            <p className="text-lg text-muted-foreground italic">
-              Your comprehensive remote health monitoring solution.
-            </p>
-          </div>
-          <div className="flex justify-center">
-            <svg
-              data-ai-hint="caregiver elderly"
-              xmlns="http://www.w3.org/2000/svg"
-              width="250"
-              height="250"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-primary"
-            >
-              <path d="M12 22V19" />
-              <path d="M12 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
-              <path d="M17.5 22V19" />
-              <path d="M17.5 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
-              <path d="M6.5 22V19" />
-              <path d="M6.5 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
-              <path d="M9 16c-1.5 0-3-1-3-2V9a2 2 0 0 1 2-2h1" />
-              <path d="M15 16c1.5 0 3-1 3-2V9a2 2 0 0 0-2-2h-1" />
-              <path d="M9.5 9.5c.6.6 1.4 1 2.5 1s1.9-.4 2.5-1" />
-              <path d="M12 19H6.5a2.5 2.5 0 0 1 0-5H12" />
-              <path d="M12 19h5.5a2.5 2.5 0 0 0 0-5H12" />
-              <path d="m15 14-3-3-3 3" />
-            </svg>
-          </div>
-        </div>
+      <div className="container mx-auto h-full flex flex-col items-center justify-center text-center">
+        <svg
+          data-ai-hint="care logo"
+          xmlns="http://www.w3.org/2000/svg"
+          width="150"
+          height="150"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="text-primary mb-6"
+        >
+          <defs>
+            <linearGradient id="logo-gradient" x1="50%" y1="0%" x2="50%" y2="100%">
+              <stop offset="0%" stopColor="#38bdf8" />
+              <stop offset="100%" stopColor="#34d399" />
+            </linearGradient>
+          </defs>
+          <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10Z" stroke="url(#logo-gradient)" strokeWidth="1.5" />
+          <path d="M15.424 15.45a4.002 4.002 0 0 1-5.656 0 4.002 4.002 0 0 1 0-5.656 4.002 4.002 0 0 1 5.656 0" stroke="url(#logo-gradient)" strokeWidth="1.5" />
+          <path d="M12 9v6" stroke="url(#logo-gradient)" strokeWidth="1.5" />
+          <path d="M9 12h6" stroke="url(#logo-gradient)" strokeWidth="1.5" />
+        </svg>
+        <h1 className="text-6xl font-bold tracking-tighter">NextCare+</h1>
+        <p className="text-lg text-muted-foreground italic mt-4">
+          Your comprehensive remote health monitoring solution.
+        </p>
       </div>
     </main>
   );
@@ -541,5 +533,3 @@ export default function Home() {
     </MqttProvider>
   );
 }
-
-    
