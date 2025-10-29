@@ -92,10 +92,10 @@ export function RealTimeVitals() {
             value={typedPayload ? typedPayload[config.key] : null}
             unit={config.unit}
             isAnomalous={
-              typedPayload?.abnormal_sign.includes(config.anomalyText) ?? false
+              typedPayload?.abnormal_sign?.includes(config.anomalyText) ?? false
             }
             anomalyDetails={
-              typedPayload && typedPayload.abnormal_sign.includes(config.anomalyText)
+              typedPayload && typedPayload.abnormal_sign?.includes(config.anomalyText)
                 ? {
                     vitalSign: config.title,
                     value: typedPayload[config.key],
