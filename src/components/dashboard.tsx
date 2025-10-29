@@ -10,6 +10,8 @@ import {
   Wind,
   Pill,
   ThermometerSun,
+  Move,
+  Orbit,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Skeleton } from './ui/skeleton';
@@ -21,7 +23,7 @@ const vitalSignsConfig = [
     unit: 'BPM',
     icon: HeartPulse,
     anomalyText: 'Uncommon heart rate',
-    thresholds: { low: 50, high: 120 },
+    thresholds: { low: 40, high: 130 },
   },
   {
     key: 'body_temperature' as const,
@@ -55,6 +57,22 @@ const vitalSignsConfig = [
     anomalyText: 'Not safest environment temperature',
     thresholds: { low: -10, high: 30 },
   },
+  {
+    key: 'AcX' as const,
+    title: 'Accelerometer X-axis',
+    unit: 'raw',
+    icon: Move,
+    anomalyText: '',
+    thresholds: {},
+  },
+  {
+    key: 'GyX' as const,
+    title: 'Gyroscope X-axis',
+    unit: 'raw',
+    icon: Orbit,
+    anomalyText: '',
+    thresholds: {},
+  },
 ];
 
 export function Dashboard() {
@@ -65,7 +83,7 @@ export function Dashboard() {
 
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       {vitalSignsConfig.map((config) => (
         <VitalSignCard
           key={config.key}
