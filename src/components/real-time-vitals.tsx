@@ -13,6 +13,7 @@ import {
   Move,
   Orbit,
 } from 'lucide-react';
+import { WellnessSummary } from './wellness-summary';
 
 const vitalSignsConfig = [
   {
@@ -81,31 +82,34 @@ export function RealTimeVitals() {
 
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      {vitalSignsConfig.map((config) => (
-        <VitalSignCard
-          key={config.key}
-          title={config.title}
-          icon={config.icon}
-          value={typedPayload ? typedPayload[config.key] : null}
-          unit={config.unit}
-          isAnomalous={
-            typedPayload?.abnormal_sign.includes(config.anomalyText) ?? false
-          }
-          anomalyDetails={
-            typedPayload && typedPayload.abnormal_sign.includes(config.anomalyText)
-              ? {
-                  vitalSign: config.title,
-                  value: typedPayload[config.key],
-                  thresholdLow: config.thresholds.low,
-                  thresholdHigh: config.thresholds.high,
-                }
-              : null
-          }
-          lastUpdated={typedPayload ? lastUpdated : 0}
-        />
-      ))}
-      <AnomalyLog anomalies={typedPayload?.abnormal_sign ?? []} />
+    <div className="space-y-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {vitalSignsConfig.map((config) => (
+          <VitalSignCard
+            key={config.key}
+            title={config.title}
+            icon={config.icon}
+            value={typedPayload ? typedPayload[config.key] : null}
+            unit={config.unit}
+            isAnomalous={
+              typedPayload?.abnormal_sign.includes(config.anomalyText) ?? false
+            }
+            anomalyDetails={
+              typedPayload && typedPayload.abnormal_sign.includes(config.anomalyText)
+                ? {
+                    vitalSign: config.title,
+                    value: typedPayload[config.key],
+                    thresholdLow: config.thresholds.low,
+                    thresholdHigh: config.thresholds.high,
+                  }
+                : null
+            }
+            lastUpdated={typedPayload ? lastUpdated : 0}
+          />
+        ))}
+        <AnomalyLog anomalies={typedPayload?.abnormal_sign ?? []} />
+      </div>
+      <WellnessSummary vitalSigns={typedPayload} />
     </div>
   );
 }
