@@ -8,7 +8,7 @@ import { Header } from '@/components/header';
 import { RealTimeVitals } from '@/components/real-time-vitals';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Siren, Pill, ShieldAlert, AlertTriangle, Send, List, ShieldCheck, Bell, MessageSquareQuote } from 'lucide-react';
+import { Siren, Pill, ShieldAlert, AlertTriangle, Send, List, ShieldCheck, Bell, MessageSquareQuote, HomeIcon } from 'lucide-react';
 import { useMqttContext } from '@/context/mqtt-context';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
@@ -366,6 +366,26 @@ const initialMedications: Medication[] = [
   { id: 5, title: 'Omega-3', time: '12:00 PM', dose: '1000mg', taken: false },
 ];
 
+function HomePage() {
+  return (
+    <main className="flex-1 p-4 sm:p-6 lg:p-8">
+      <div className="flex items-center justify-center h-full">
+        <Card className="w-full max-w-lg text-center">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-center gap-2 text-2xl">
+                <HomeIcon className="h-8 w-8 text-primary" />
+                Welcome to VitalView
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">Select 'Elder View' or 'Family View' from the tabs above to get started.</p>
+            </CardContent>
+          </Card>
+        </div>
+    </main>
+  );
+}
+
 function AppView({
   userType,
   medications,
@@ -423,7 +443,7 @@ export default function Home() {
   const [medicationReminders, setMedicationReminders] = useState<MedicationReminder[]>([]);
   const [sosAlerts, setSosAlerts] = useState<SosAlert[]>([]);
   const { toast } = useToast();
-  const [activeView, setActiveView] = useState<'elder' | 'family'>('elder');
+  const [activeView, setActiveView] = useState<'home' | 'elder' | 'family'>('home');
 
   const handleMedicationToggle = (id: number) => {
     // If an elder marks a reminder as done, update the main medication list
@@ -475,18 +495,20 @@ export default function Home() {
     <MqttProvider>
       <div className="min-h-screen w-full bg-background font-body">
         <Header activeView={activeView} setActiveView={setActiveView} />
-          <AppView
-            userType={activeView}
-            medications={medications}
-            medicationReminders={medicationReminders}
-            handleMedicationToggle={handleMedicationToggle}
-            handleSendReminder={handleSendReminder}
-            sosAlerts={sosAlerts}
-            handleSendSosAlert={handleSendSosAlert}
-          />
+         {activeView === 'home' ? (
+            <HomePage />
+          ) : (
+            <AppView
+              userType={activeView}
+              medications={medications}
+              medicationReminders={medicationReminders}
+              handleMedicationToggle={handleMedicationToggle}
+              handleSendReminder={handleSendReminder}
+              sosAlerts={sosAlerts}
+              handleSendSosAlert={handleSendSosAlert}
+            />
+         )}
       </div>
     </MqttProvider>
   );
 }
-
-    

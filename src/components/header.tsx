@@ -7,8 +7,8 @@ import { Waves } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface HeaderProps {
-  activeView: 'elder' | 'family';
-  setActiveView: (view: 'elder' | 'family') => void;
+  activeView: 'home' | 'elder' | 'family';
+  setActiveView: (view: 'home' | 'elder' | 'family') => void;
 }
 
 export function Header({ activeView, setActiveView }: HeaderProps) {
@@ -23,8 +23,9 @@ export function Header({ activeView, setActiveView }: HeaderProps) {
             VitalView
           </h1>
         </div>
-        <Tabs value={activeView} onValueChange={(value) => setActiveView(value as 'elder' | 'family')}>
-            <TabsList className="grid w-full grid-cols-2">
+        <Tabs value={activeView} onValueChange={(value) => setActiveView(value as 'home' |'elder' | 'family')}>
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="home">Home</TabsTrigger>
               <TabsTrigger value="elder">Elder View</TabsTrigger>
               <TabsTrigger value="family">Family View</TabsTrigger>
             </TabsList>
