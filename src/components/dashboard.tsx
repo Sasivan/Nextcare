@@ -29,7 +29,7 @@ const vitalSignsConfig = [
     unit: '°C',
     icon: Thermometer,
     anomalyText: 'High body temperature',
-    thresholds: { high: 37 },
+    thresholds: { low: 36.1, high: 37.2 },
   },
   {
     key: 'shirt_humidity' as const,
@@ -45,7 +45,7 @@ const vitalSignsConfig = [
     unit: 'breaths/min',
     icon: Wind,
     anomalyText: 'Unusual breath rate',
-    thresholds: { low: 12, high: 18 },
+    thresholds: { low: 12, high: 20 },
   },
   {
     key: 'env_temperature' as const,
