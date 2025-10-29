@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MqttProvider } from '@/context/mqtt-context';
 import { Sidebar, type NavItem } from '@/components/sidebar';
 import { Header } from '@/components/header';
@@ -12,6 +12,8 @@ import { Siren, Pill, ShieldAlert, AlertTriangle } from 'lucide-react';
 import { useMqttContext } from '@/context/mqtt-context';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
+import { BellRing } from 'lucide-react';
 
 function SOSAlertPage() {
   return (
@@ -38,29 +40,74 @@ function SOSAlertPage() {
 }
 
 function MedicationPage() {
-    const { payload } = useMqttContext();
-    const typedPayload = payload as any;
-    
+  const { payload } = useMqttContext();
+  const { toast } = useToast();
+  const typedPayload = payload as any;
+  const medicationTaken = typedPayload?.swallow_pill_today === true;
+
+  useEffect(() => {
+    let reminderInterval: NodeJS.Timeout | null = null;
+
+    if (payload && !medicationTaken) {
+      // Immediately show a reminder if medication is not taken
+      toast({
+        title: 'Medication Reminder',
+        description: 'Please remember to take your medication.',
+        action: <BellRing className="h-6 w-6 text-primary" />,
+      });
+
+      // Then set an interval to remind every 2 minutes
+      reminderInterval = setInterval(() => {
+        toast({
+          title: 'Medication Reminder',
+          description: 'It\'s time to take your medication.',
+          action: <BellRing className="h-6 w-6 text-primary" />,
+        });
+      }, 2 * 60 * 1000); // 2 minutes
+    }
+
+    // Cleanup function to clear interval when component unmounts or medication is taken
+    return () => {
+      if (reminderInterval) {
+        clearInterval(reminderInterval);
+      }
+    };
+  }, [payload, medicationTaken, toast]);
+
+
   return (
     <div className="flex items-center justify-center h-full">
-        <Card>
-            <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-                Medication Adherence
-            </CardTitle>
-            <Pill className="h-5 w-5 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-            {typedPayload ? (
-            <div className={cn('text-3xl font-bold', typedPayload.swallow_pill_today ? 'text-green-500' : 'text-destructive')}>
-                {typedPayload.swallow_pill_today ? 'YES' : 'NO'}
+      <Card className="w-full max-w-sm">
+        <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium text-muted-foreground">
+            Medication Adherence
+          </CardTitle>
+          <Pill className="h-5 w-5 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          {typedPayload ? (
+            <div
+              className={cn(
+                'text-3xl font-bold',
+                medicationTaken ? 'text-green-500' : 'text-destructive'
+              )}
+            >
+              {medicationTaken ? 'YES' : 'NO'}
             </div>
-            ) : (
+          ) : (
             <Skeleton className="h-8 w-20" />
-            )}
-            <p className="text-xs text-muted-foreground mt-2">Pill swallowed today</p>
-            </CardContent>
-        </Card>
+          )}
+          <p className="text-xs text-muted-foreground mt-2">
+            Pill swallowed today
+          </p>
+          {!medicationTaken && payload && (
+             <div className="mt-4 p-3 bg-blue-900/20 rounded-lg flex items-center gap-3">
+              <BellRing className="h-5 w-5 text-primary animate-pulse"/>
+              <p className="text-sm text-primary-foreground">Awaiting medication confirmation. Reminders are active.</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
