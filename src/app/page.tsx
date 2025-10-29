@@ -380,8 +380,8 @@ function HomePage() {
             </p>
           </div>
           <div className="flex justify-center">
-           <svg
-              data-ai-hint="elderly care symbol"
+            <svg
+              data-ai-hint="caregiver elderly"
               xmlns="http://www.w3.org/2000/svg"
               width="250"
               height="250"
@@ -393,20 +393,18 @@ function HomePage() {
               strokeLinejoin="round"
               className="text-primary"
             >
-              <path d="M12 2a5 5 0 0 0-5 5c0 1.66.84 3.15 2.13 4.09" />
-              <path d="M17 7a5 5 0 0 0-5-5" />
-              <path d="M12 22v-6" />
-              <path d="M9 16h6" />
-              <path d="M12 7a5 5 0 0 0 5 5c0 1.66-.84 3.15-2.13 4.09" />
-              <path d="m12 16-2-4" />
-              <path d="m12 16 2-4" />
-              <path d="M19.13 11.09c1.29-.94 2.13-2.43 2.13-4.09a5 5 0 0 0-5-5" />
-              <path d="M17.5 17.5c-2.5-2.5-6.5-2.5-9 0" />
-              <path d="M22 17h-2" />
-              <path d="M19 17v-2" />
-              <path d="M5 17H3" />
-              <path d="M5 15v2" />
-              <path d="M12 16.5a4.5 4.5 0 0 0-4.5 4.5h9a4.5 4.5 0 0 0-4.5-4.5z" />
+              <path d="M12 22V19" />
+              <path d="M12 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
+              <path d="M17.5 22V19" />
+              <path d="M17.5 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
+              <path d="M6.5 22V19" />
+              <path d="M6.5 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
+              <path d="M9 16c-1.5 0-3-1-3-2V9a2 2 0 0 1 2-2h1" />
+              <path d="M15 16c1.5 0 3-1 3-2V9a2 2 0 0 0-2-2h-1" />
+              <path d="M9.5 9.5c.6.6 1.4 1 2.5 1s1.9-.4 2.5-1" />
+              <path d="M12 19H6.5a2.5 2.5 0 0 1 0-5H12" />
+              <path d="M12 19h5.5a2.5 2.5 0 0 0 0-5H12" />
+              <path d="m15 14-3-3-3 3" />
             </svg>
           </div>
         </div>
@@ -543,3 +541,5 @@ export default function Home() {
     </MqttProvider>
   );
 }
+
+    
