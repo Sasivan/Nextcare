@@ -11,7 +11,7 @@ interface MqttContextType {
 
 const MqttContext = createContext<MqttContextType | undefined>(undefined);
 
-const MQTT_BROKER = 'wss://broker.mqttdashboard.com:8000/mqtt';
+const MQTT_BROKER = 'wss://broker.hivemq.com:8000/mqtt';
 const MQTT_TOPIC = 'vital-signs';
 
 export function MqttProvider({ children }: { children: ReactNode }) {

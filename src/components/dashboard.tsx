@@ -21,7 +21,7 @@ const vitalSignsConfig = [
     unit: 'BPM',
     icon: HeartPulse,
     anomalyText: 'Uncommon heart rate',
-    thresholds: { low: 60, high: 100 },
+    thresholds: { low: 50, high: 120 },
   },
   {
     key: 'body_temperature' as const,
@@ -37,7 +37,7 @@ const vitalSignsConfig = [
     unit: '%',
     icon: Droplets,
     anomalyText: 'High sweat (Humidity)',
-    thresholds: { high: 70 },
+    thresholds: { high: 80 },
   },
   {
     key: 'breath_rate' as const,
@@ -45,7 +45,7 @@ const vitalSignsConfig = [
     unit: 'breaths/min',
     icon: Wind,
     anomalyText: 'Unusual breath rate',
-    thresholds: { low: 12, high: 20 },
+    thresholds: { low: 10, high: 24 },
   },
   {
     key: 'env_temperature' as const,
@@ -53,13 +53,16 @@ const vitalSignsConfig = [
     unit: '°C',
     icon: ThermometerSun,
     anomalyText: 'Not safest environment temperature',
-    thresholds: { low: 5, high: 35 },
+    thresholds: { low: -10, high: 30 },
   },
 ];
 
 export function Dashboard() {
   const { payload } = useMqttContext();
   const lastUpdated = Date.now();
+
+  const typedPayload = payload as any;
+
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -68,22 +71,22 @@ export function Dashboard() {
           key={config.key}
           title={config.title}
           icon={config.icon}
-          value={payload ? payload[config.key] : null}
+          value={typedPayload ? typedPayload[config.key] : null}
           unit={config.unit}
           isAnomalous={
-            payload?.abnormal_sign.includes(config.anomalyText) ?? false
+            typedPayload?.abnormal_sign.includes(config.anomalyText) ?? false
           }
           anomalyDetails={
-            payload && payload.abnormal_sign.includes(config.anomalyText)
+            typedPayload && typedPayload.abnormal_sign.includes(config.anomalyText)
               ? {
                   vitalSign: config.title,
-                  value: payload[config.key],
+                  value: typedPayload[config.key],
                   thresholdLow: config.thresholds.low,
                   thresholdHigh: config.thresholds.high,
                 }
               : null
           }
-          lastUpdated={payload ? lastUpdated : 0}
+          lastUpdated={typedPayload ? lastUpdated : 0}
         />
       ))}
       <Card>
@@ -94,9 +97,9 @@ export function Dashboard() {
           <Pill className="h-5 w-5 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-        {payload ? (
-          <div className={`text-3xl font-bold ${payload.swallow_pill_today ? 'text-green-500' : 'text-destructive'}`}>
-            {payload.swallow_pill_today ? 'YES' : 'NO'}
+        {typedPayload ? (
+          <div className={`text-3xl font-bold ${typedPayload.swallow_pill_today ? 'text-green-500' : 'text-destructive'}`}>
+            {typedPayload.swallow_pill_today ? 'YES' : 'NO'}
           </div>
         ) : (
           <Skeleton className="h-8 w-20" />
@@ -104,7 +107,7 @@ export function Dashboard() {
           <p className="text-xs text-muted-foreground mt-2">Pill swallowed today</p>
         </CardContent>
       </Card>
-      <AnomalyLog anomalies={payload?.abnormal_sign ?? []} />
+      <AnomalyLog anomalies={typedPayload?.abnormal_sign ?? []} />
     </div>
   );
 }
